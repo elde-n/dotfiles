@@ -1,0 +1,18 @@
+#!/bin/sh
+
+app="brightnessctl --quiet"
+path=$HOME/.cache/backlight
+
+notify() {
+	brightness=$(echo "scale=2;100*($(brightnessctl get)/$(brightnessctl max))" | bc)
+
+	echo $(brightnessctl get) > "$path"
+
+	notify-send -h string:x-dunst-stack-tag:brightness \
+		"Brightness: $brightness" -h int:value:"$brightness"
+}
+
+case "$1" in
+	"up") $app set "+$2%"; notify ;;
+	"down") $app set "$2%-"; notify ;;
+esac

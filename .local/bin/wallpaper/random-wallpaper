@@ -1,0 +1,3 @@
+#!/bin/sh
+wallpapers_directory="$HOME/Pictures/wallpapers/"
+set-background $wallpapers_directory/.

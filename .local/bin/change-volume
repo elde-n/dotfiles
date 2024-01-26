@@ -1,0 +1,15 @@
+#!/bin/sh
+
+app="wpctl"
+
+notify() {
+	volume=$( (wpctl get-volume @DEFAULT_AUDIO_SINK@) | grep -Eo "[0-9].[0-9]*" )
+	volume=$( echo "$volume * 100" | bc )
+	notify-send -h string:x-dunst-stack-tag:volume \
+		"Volume: $volume" -h int:value:"$volume"
+}
+
+case "$1" in
+	"up") $app set-volume @DEFAULT_AUDIO_SINK@ "$2%+"; notify ;;
+	"down") $app set-volume @DEFAULT_AUDIO_SINK@ "$2%-"; notify ;;
+esac

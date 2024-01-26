@@ -1,0 +1,28 @@
+#!/bin/sh
+
+touchpad=""
+
+brightness=$(< "$HOME/.cache/backlight")
+brightnessctl set $brightness
+
+swww init
+set-background &
+gentoo-pipewire-launcher &
+solaar -w=hide &
+
+autostart="ydotoold notify-send-log battery-warn mopidy" # mpc-auto-play"
+for program in $autostart; do
+    pidof -s "$program" || "$program" &
+done >/dev/null 2>&1
+
+# disable touchpad
+#hyprctl keyword "device:$touchpad:enabled" false
+
+# start programs
+hyprctl dispatch exec librewolf &
+hyprctl dispatch exec flatpak run dev.vencord.Vesktop & # TODO stop using discord or compile Vesktop from source
+
+swayidle -w timeout 300 'swaylock -f' \
+	 timeout 600 'hyprctl dispatch dpms off' \
+	 resume 'hyprctl dispatch dpms on' \
+	 before-sleep 'swaylock -f' &
