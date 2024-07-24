@@ -1,24 +1,30 @@
 return {
-	"nvim-neorg/neorg",
-	-- tag = "*",
-	build = ":Neorg sync-parsers",
+	"chipsenkbeil/org-roam.nvim",
+	tag = "0.1.0",
 
-	dependencies = {"nvim-lua/plenary.nvim"},
+	dependencies = {
+		{
+			"nvim-orgmode/orgmode",
+			tag = "0.3.4"
+		},
+
+		{
+			"nvim-treesitter/nvim-treesitter"
+		},
+
+		{
+			"lukas-reineke/headlines.nvim",
+			tag = "v4.0.1",
+			config = function()
+				require("headlines").setup()
+			end
+		}
+	},
 
 	config = function()
-		local neorg = require "neorg"
-		neorg.setup ({
-			load = {
-				["core.defaults"] = {}, -- Loads default behaviour
-				["core.concealer"] = {}, -- Adds pretty icons to your documents
-				["core.dirman"] = { -- Manages Neorg workspaces
-					config = {
-						workspaces = {
-							notes = "~/Documents/notes"
-						}
-					}
-				}
-			}
+		local org_roam = require "org-roam"
+		org_roam.setup({
+			directory = "~/Documents/notes"
 		})
 	end
 }

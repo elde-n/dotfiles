@@ -1,0 +1,56 @@
+#!/usr/bin/env luajit
+
+
+local files = require "modules/files"
+local notify = require "modules/notify"
+local command = require "modules/command"
+
+local DOWNLOADS = os.getenv("HOME") .. "/Downloads"
+local VIDEOS = DOWNLOADS .. "/videos"
+local AUDIOS = DOWNLOADS .. "/audios"
+local IMAGES = DOWNLOADS .. "/images"
+
+
+local function get_file_type(file)
+	local result, err = command.new("file")
+		:arg("--mime-type -b")
+		:arg(file)
+		:run()
+
+	if err then return result.code end
+	return (string.gsub(result.output, "(.*)(/.*)", "%1"))
+end
+
+local function get_file_date(file)
+	local result, err = command.new("stat")
+		:arg("-c", "%y", '"' .. file .. '"')
+		:run()
+
+	if err then return result.code end
+	return (string.gsub(result.output, "([%d%-]*)(.*)", "%1"))
+end
+
+local function get_target_destination(file)
+	local file_type = get_file_type(file)
+	if file_type == "video" then return VIDEOS
+	elseif file_type == "audios" then return AUDIOS
+	elseif file_type == "image" then return IMAGES
+	end
+
+	return DOWNLOADS .. '/' .. string.gsub(get_file_date(file), '-', '/')
+end
+
+for _, file in next, files.read_directory(DOWNLOADS) do
+	if not files.is_directory(file) then
+		local target = get_target_destination(file)
+		if not files.is_directory(target) then
+			files.write_directory(target)
+		end
+
+		if files.is_directory(target) then
+			files.move(file, target)
+		end
+	end
+end
+
+notify.new({ title = "Finished sorting downloads" }):send()

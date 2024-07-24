@@ -21,9 +21,6 @@ return {
 				g = {"<cmd>Telescope live_grep<cr>", "Live Grep"},
 				b = {"<cmd>Telescope buffers<cr>", "Find Buffers"},
 			},
-
-			x = {"<cmd>Explore<cr>", "Explore"}
 		}, { prefix = "<leader>"})
-
 	end
 }

@@ -1,0 +1,6 @@
+[icon]
+
+rules = [
+	{name = "*", text = ""},
+	{name = "*/", text = ""},
+]

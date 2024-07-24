@@ -1,0 +1,38 @@
+#!/usr/bin/env luajit
+
+local command = require "modules/command"
+local helpers = require "modules/helpers"
+
+local commands = {
+	"doas /sbin/poweroff",
+	"doas /sbin/reboot",
+	--"loginctl suspend-then-hibernate"
+	"hyprlock", --uhhh
+	"loginctl hibernate",
+	"hyprlock dispatch exit",
+	"hyprlock"
+}
+
+local options = {
+	"󰤆 Shutdown",
+	"󰑖 Reboot",
+	--"  Suspend",
+	" Sleep",
+	"󰜗 Hibernate",
+	"󰍃 Log Out",
+	" Lock"
+}
+
+local result = command.new("echo")
+	:arg('"' .. table.concat(options, '\n') .. '"')
+	:pipe(command.new(os.getenv("MENU_LAUNCHER"))
+		:arg("-p \"Power\"")
+		:arg("-i -l -1")
+	)
+	:run()
+
+
+local index = helpers.table_find(options, result.output)
+if index and commands[index] then
+	command.new(commands[index]):run()
+end

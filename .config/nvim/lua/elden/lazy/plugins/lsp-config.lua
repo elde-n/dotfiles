@@ -36,7 +36,8 @@ local function config()
 		on_attach = on_attach,
 		cmd = {
 			"luau-lsp", "lsp",
-			"--definitions=/home/elden/.config/luau-lsp/global-types.d.lua"
+			"--definitions=/home/elden/.config/luau-lsp/global-types.d.lua",
+			"--settings=/home/elden/.config/luau-lsp/settings.json"
 		},
 
 		filetypes = {
@@ -109,10 +110,6 @@ local function config()
 		on_attach = on_attach
 	}
 
-	local templ_lsp = {
-		on_attach = on_attach
-	}
-
 	local c_cpp_lsp = {
 		on_attach = on_attach
 	}
@@ -133,12 +130,6 @@ local function config()
 		on_attach = on_attach
 	}
 
-	local typescript_lsp = {}
-
-	local kotlin_lsp = {
-		on_attach = on_attach
-	}
-
 	-- Lua
 	--lsp.lua_ls.setup(lua_lsp)
 
@@ -149,16 +140,14 @@ local function config()
 
 	lsp.bashls.setup(shell_lsp)
 	lsp.pylsp.setup(python_lsp)
+	lsp.tsserver.setup({
+		cmd = { "tsserver", "--stdio" }
+	})
 
 	lsp.gopls.setup(go_lsp)
-	lsp.templ.setup(templ_lsp)
-
-	lsp.tsserver.setup(typescript_lsp)
-
-	-- broken hella
-	--lsp.kotlin_language_server.setup(kotlin_lsp)
 
 	lsp.clangd.setup(c_cpp_lsp)
+	--lsp.autotools_ls.setup(make_lsp) can't install autotools-language-server from pypi overlay
 	lsp.cmake.setup(cmake_lsp)
 
 	lsp.rust_analyzer.setup(rust_lsp)

@@ -1,0 +1,15 @@
+#!/usr/bin/env luajit
+
+local arguments = {...}
+
+local command = require "modules/command"
+
+command.new("yt-dlp")
+	:arg("-xciw")
+	:arg("-o", "'%(title)s.%(ext)s'")
+	:arg("--audio-format", "best")
+	:arg("--no-abort-on-error")
+	:arg("--no-restrict-filenames")
+	:arg("--audio-quality", 2)
+	:arg("--embed-metadata", arguments[1])
+	:run()

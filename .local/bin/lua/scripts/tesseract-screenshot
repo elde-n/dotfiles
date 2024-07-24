@@ -1,0 +1,28 @@
+#!/usr/bin/env luajit
+
+local files = require "modules/files"
+local command = require "modules/command"
+local clipboard = require "modules/clipboard"
+
+local input_image = "/tmp/tesseract-image.png"
+local output_image = "/tmp/tesseract-output"
+
+local result = command.new("grim")
+	:arg("-g")
+	:arg(command.new("slurp")
+		:arg('-')
+		:pipe(command.new("wl-copy"))
+	)
+	:run()
+
+files.write_file(input_image, clipboard.get())
+
+local result = command.new("tesseract")
+	:arg("-l", "eng")
+	:arg(input_image)
+	:arg(output_image)
+	:arg("quiet")
+	:run()
+
+local content = files.read_file("/tmp/tesseract-output.txt")
+clipboard.set(content)

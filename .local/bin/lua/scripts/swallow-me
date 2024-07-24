@@ -1,0 +1,24 @@
+#!/usr/bin/env luajit
+
+local arguments = {...}
+
+local json = require "modules/json"
+local command = require "modules/command"
+
+local j = json.new(command.new("hyprctl")
+	:arg("activewindow")
+	:arg("-j")
+	:run()
+	.output)
+
+command.new("hyprctl")
+	:arg("dispatch")
+	:arg("movetoworkspacesilent")
+	:arg("special")
+	:run()
+command.new(table.remove(arguments, 1)):arg(unpack(arguments)):run()
+command.new("hyprctl")
+	:arg("dispatch")
+	:arg("movetoworkspacesilent")
+	:arg(string.format("%d,pid:%d", j:retrieve(".workspace.id"), j:retrieve(".pid")))
+	:run()

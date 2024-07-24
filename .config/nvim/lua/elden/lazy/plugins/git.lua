@@ -1,6 +1,8 @@
 return {
 	"NeogitOrg/neogit",
 
+	tag = "v0.0.1", -- for 0.9.x, remove tag on update?
+
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"sindrets/diffview.nvim",
@@ -10,7 +12,7 @@ return {
 	config = function()
 		local neogit = require "neogit"
 		local diff_view = require "diffview"
-		local actions = require "diffview.actions"
+		local diff_view_actions = require "diffview.actions"
 
 		neogit.setup({
 			-- sourcehut and codeberg??
@@ -26,6 +28,6 @@ return {
 		})
 
 		vim.keymap.set('n', "<leader>ng", function() neogit.open() end)
-		vim.keymap.set('n', "<leader>ngd", function() vim.cmd(":DiffviewOpen") end)
+		vim.keymap.set('n', "<leader>ngd", function() diff_view_actions.open() end)
 	end
 }

@@ -1,0 +1,5 @@
+[plugin]
+prepend_preloaders = [
+	{ mime = "*", run = "ripdrag" },
+]
+

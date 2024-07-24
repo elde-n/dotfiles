@@ -1,0 +1,36 @@
+#!/usr/bin/env luajit
+
+local arguments = {...}
+
+local notify = require "modules/notify"
+local command = require "modules/command"
+
+local action = arguments[1]
+local value = arguments[2] or '0'
+
+if not action then return end
+
+local app = command.new("wpctl")
+	:arg("set-volume")
+	:arg("@DEFAULT_AUDIO_SINK@")
+
+if action == "up" then
+	app:arg(value .. "%+"):run()
+elseif action == "down" then
+	app:arg(value .. "%-"):run()
+end
+
+local volume = command.new("wpctl")
+	:arg("get-volume")
+	:arg("@DEFAULT_AUDIO_SINK@")
+	:run()
+	.output
+
+volume = tostring(tonumber((string.gsub(volume, "(.*%s)(.*)", "%2"))) * 100)
+notify.new({
+	app_name = "wpctl",
+	title = "Volume: " .. volume
+})
+	:hint("string", "synchronous", "volume")
+	:hint("int", "value", volume)
+	:send()

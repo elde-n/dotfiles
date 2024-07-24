@@ -1,5 +1,0 @@
-#!/bin/sh
-
-grim -g "$(slurp)" - | wl-copy && wl-paste > /tmp/tesseract-image.png \
-	&& tesseract -l eng /tmp/tesseract-image.png /tmp/tesseract-output quiet \
-	&& cat /tmp/tesseract-output.txt | wl-copy

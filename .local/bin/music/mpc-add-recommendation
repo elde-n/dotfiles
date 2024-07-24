@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# since yt-dl is very buggy we might have to use something else but for now it werks
-# mopidy-youtube: https://github.com/natumbri/mopidy-youtube
-
-url=$(get-random-recommendation)
-mpc add "youtube:$url"

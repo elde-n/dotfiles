@@ -1,0 +1,65 @@
+#!/usr/bin/env luajit
+
+local arguments = {...}
+local file = arguments[1]
+
+local notify = require "modules/notify"
+local command = require "modules/command"
+local helpers = require "modules/helpers"
+
+local sym_location = os.getenv("HOME") .. "/.local/share/bg"
+
+local location do
+	local result, err = command.new("readlink")
+		:arg(sym_location)
+		:run()
+
+	if err then return result.code end
+	location = result.output
+end
+
+local mime_type do
+	local result, err = command.new("file")
+		:arg("--mime-type -b")
+		:arg(helpers.wrap_quotes(file))
+		:run()
+
+	if err then return result.code end
+	mime_type = result.output
+end
+
+if string.match(mime_type, "image/*") then
+	command.new("ln")
+		:arg("-sfr", helpers.wrap_quotes(file), sym_location)
+		:run()
+
+	notify.new({
+		title = "Changing wallpaper..",
+		icon = sym_location
+	}):send()
+elseif mime_type == "inode/directory" then
+	command.new("ln")
+		:arg("-sfr", helpers.wrap_quotes(file))
+		:arg("-iregex")
+		:arg("'.*.\\(jpg\\|jpeg\\|png\\|gif\\)'")
+		:arg("-type f")
+		:pipe(command.new("shuf")
+			:arg("-n 1")
+		)
+		:arg(sym_location)
+		:run()
+	notify.new({
+		title = "Random wallpaper chosen.",
+		icon = sym_location
+	}):send()
+else
+	notify.new({ title = " Error", body = "Not a valid image or directory" }):send()
+	return 1
+end
+
+local result = command.new("swww")
+	:arg("img")
+	:arg(helpers.wrap_quotes(sym_location))
+	:run()
+
+return result.code

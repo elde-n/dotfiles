@@ -1,0 +1,39 @@
+#!/usr/bin/env luajit
+
+local files = require "modules/files"
+local helpers = require "modules/helpers"
+
+local NETWORK_PATH = "/sys/class/net"
+
+local function update(n_files)
+	local sum = 0
+	for _, file in next, n_files do
+		sum = sum + files.read_file(file)
+	end
+
+	local old_sum = 0
+	local cache = "/tmp/" .. files.get_file_name(n_files[1])
+	if files.is_file(cache) then
+		old_sum = files.read_file(cache)
+	end
+
+	files.write_file(cache, sum)
+	return sum - old_sum
+end
+
+local networks = {}
+for _, v in next, files.read_directory(NETWORK_PATH) do
+	local c = string.sub(files.get_file_name(v), 1, 1)
+	if c == 'e' or c == 'w' then
+		table.insert(networks, v)
+	end
+end
+
+local rx_files, tx_files = {}, {}
+for i, network in next, networks do
+	rx_files[i] = network .. "/statistics/rx_bytes"
+	tx_files[i] = network .. "/statistics/tx_bytes"
+end
+
+local rx, tx = update(rx_files), update(tx_files)
+print(string.format("[D-%s U-%s]", helpers.format_number(rx), helpers.format_number(tx)))

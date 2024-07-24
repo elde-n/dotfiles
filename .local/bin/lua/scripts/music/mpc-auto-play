@@ -1,0 +1,26 @@
+#!/usr/bin/env luajit
+
+local command = require "modules/command"
+
+local add_command = command.new("mpc-add-recommendation")
+local remove_command = command.new("mpc"):arg("del"):arg(1)
+local wait_command = command.new("mpc"):arg("current"):arg("--wait")
+local playlist_command = command.new("mpc"):arg("playlist")
+
+local function get_playlist_count()
+	return playlist_command:run()
+end
+
+-- buffer
+for i = 1, 8 do add_command:run() end
+
+while true do
+	local count = get_playlist_count()
+	if count < 8 then
+		add_command:run()
+	elseif count >= 8 then
+		remove_command:run()
+	end
+
+	wait_command:run()
+end

@@ -3,12 +3,13 @@ return {
 
 	config = function()
 		local trouble = require "trouble"
-
 		trouble.setup({
-			icons = false
+			focus = true
 		})
 
-		vim.keymap.set('n', "<leader>dt", function() trouble.toggle() end)
+		vim.keymap.set('n', "<leader>dt", function()
+			trouble.toggle("diagnostics")
+		end)
 
 		vim.diagnostic.config({
 			--virtual_text = true,

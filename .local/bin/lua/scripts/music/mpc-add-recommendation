@@ -1,0 +1,9 @@
+#!/usr/bin/env luajit
+
+-- since yt-dl is very buggy we might have to use something else but for now it werks
+-- mopidy-youtube: https://github.com/natumbri/mopidy-youtube
+
+local command = require "modules/command"
+
+local url = command.new("get-random-recommendation"):run().output
+command.new("mpc"):arg("add"):arg("youtube:" .. url)
