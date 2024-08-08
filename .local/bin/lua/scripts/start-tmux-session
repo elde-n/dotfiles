@@ -1,0 +1,51 @@
+#!/usr/bin/env luajit
+
+local command = require "modules/command"
+local desktop = require "modules/desktop"
+
+local HOME = os.getenv("HOME")
+
+command.new("tmux")
+	:arg("new-session")
+	:arg("-d -s 'home'")
+	:run()
+
+command.new("tmux")
+	:arg("new-session")
+	:arg("-d -s 'code'")
+	:run()
+
+command.new("tmux")
+	:arg("new-window")
+	:arg("-thome: -c")
+	:arg(HOME)
+	:arg("neomutt")
+	:run()
+
+command.new("tmux")
+	:arg("new-window")
+	:arg("-thome: -c")
+	:arg(HOME .. "/Music")
+	:arg("ncmpcpp")
+	:run()
+
+command.new("tmux")
+	:arg("new-window")
+	:arg("-tcode: -c")
+	:arg(HOME .. "/Documents/code")
+	:run()
+
+if desktop.name() == "Hyprland" then
+	command.new("hyprctl")
+		:arg("dispatch -- exec")
+		:arg("'[workspace 3 silent]'")
+		:arg(os.getenv("TERMINAL"), "-T homeland", "-e tmux attach -thome")
+		:spawn()
+elseif desktop.name() == "sway" then
+	command.new("swaymsg")
+		:arg("exec --")
+		--TODO: move container to workspace won't work, cause it uses focused window.
+		-- there's also no way to get the pid of the newly spawned process (lol)
+		:arg(os.getenv("TERMINAL"), "-T homeland", "-e tmux attach -thome")
+		:spawn()
+end
