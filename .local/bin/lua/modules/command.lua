@@ -3,6 +3,10 @@ command.__index = command
 
 local handle = require "modules/handle"
 
+local function wait(self)
+	assert("TODO")
+end
+
 function command.new(name)
 	return setmetatable({
 		binary = name,
@@ -17,7 +21,8 @@ function command:run()
 	return {
 		output = output,
 		status = status,
-		code = code
+		code = code,
+		wait = wait
 	}, code and true or false
 end
 
@@ -26,6 +31,7 @@ function command:spawn()
 	return handle.new(run)
 end
 
+-- TODO support tables
 function command:arg(...)
 	for _, v in next, {...} do
 		if type(v) ~= "string" and type(v) ~= "number" then

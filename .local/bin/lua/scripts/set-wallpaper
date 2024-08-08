@@ -3,6 +3,12 @@
 local arguments = {...}
 local file = arguments[1]
 
+local function usage()
+	return "Usage: set-wallpaper <path>"
+end
+
+if not file then return print(usage()) end
+
 local notify = require "modules/notify"
 local command = require "modules/command"
 local helpers = require "modules/helpers"

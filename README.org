@@ -6,7 +6,8 @@
 *** [[https://github.com/sharkdp/bat][bat]] A cat(1) clone with syntax highlighting
 *** [[https://github.com/aristocratos/btop][btop]] A top clone with an interactive mode
 *** [[https://gitlab.gnome.org/GNOME/gimp][gimp]] My image editor
-*** [[https://github.com/hyprwm/Hyprland][hyprland]] My wayland window manager
+*** [[https://github.com/hyprwm/Hyprland][hyprland]] My window manager
+*** [[https://github.com/swaywm/sway][sway]] My window manager
 *** [[https://github.com/keepassxreboot/keepassxc][keepassxc]] My password manager
 *** [[https://github.com/librewolf-community/librewolf][librewolf]] My web browser
 *** [[https://github.com/MusicPlayerDaemon/MPD][mpd]] My music server

@@ -4,22 +4,22 @@
 	"height": 16,
 	"spacing": 0, // Gaps between modules (4px)
 
-	"modules-left": ["hyprland/workspaces", "hyprland/window"], // Choose the order of the modules
+	"modules-left": ["sway/workspaces", "sway/window"], // Choose the order of the modules
 	"modules-center": ["clock"],
 	"modules-right": [
 		"wireplumber", "cpu", "temperature", "memory", "backlight", "battery", "network",
-		"idle_inhibitor", "privacy", "hyprland/language", "custom/notifications",
+		"idle_inhibitor", "privacy", "sway/language", "custom/notifications",
 		"tray" //"group/group_tray"
 	],
 
-	"hyprland/workspaces": {
+	"sway/workspaces": {
 		"disable-scroll": true,
 		"all-outputs": true,
 		"sort-by-number": false,
 		"format": "{icon}",
 		"format-icons": {
-			"1": "",
-			"2": "",
+			"1": "",
+			"2": "󰈹",
 			"3": "",
 			"4": "4",
 			"5": "5",
@@ -28,7 +28,7 @@
 			"8": "8",
 			"9": "9",
 			"10": "10",
-			"urgent": "",
+			"urgent": ""
 			//"active": "",
 			//"default": ""
 		},
@@ -38,23 +38,30 @@
 		"on-click": "activate"
 	},
 
-	"hyprland/window": {
+	"sway/window": {
 		"max-length": 50,
 		"separate-outputs": true
 	},
 
-	"hyprland/language": {
+	"sway/language": {
 		"format": "{short} {variant}",
 		"tooltip": true,
 		"tooltip-format": "{long}",
-		"on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next; hyprctl switchxkblayout swhkd-virtual-output next"
+		"on-click": "swaymsg input type:keyboard xkb_switch_layout next"
 	},
+
+	//"hyprland/language": {
+	//	"format": "{short} {variant}",
+	//	"tooltip": true,
+	//	"tooltip-format": "{long}",
+	//	"on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next; hyprctl switchxkblayout swhkd-virtual-output next"
+	//},
 
 	"idle_inhibitor": {
 		"format": "{icon}",
 		"format-icons": {
-			"activated": "",
-			"deactivated": ""
+			"activated": " ",
+			"deactivated": " "
 		}
 	},
 

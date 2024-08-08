@@ -1,5 +1,7 @@
 #!/usr/bin/env luajit
 
+--TODO: add support for sway
+
 local arguments = {...}
 
 local json = require "modules/json"
