@@ -1,0 +1,14 @@
+set {
+	$mod Mod4
+	$left h
+	$down j
+	$up k
+	$right l
+}
+
+set {
+	$menu anyrun | wmenu | xargs swaymsg exec --
+	$toggle_waybar killall -s SIGUSR1 waybar
+	$screenshot_format ~/Pictures/screenshots/desktop/screenshot-$(date '+%y%m%d-%H%M-%S').png
+	$resize_value 20
+}

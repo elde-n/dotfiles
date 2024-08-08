@@ -1,0 +1,23 @@
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+
+input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
+    accel_profile "flat"
+    pointer_accel -0.987 #25600 dpi
+    #pointer_accel -0.87 #1200 dpi
+}
+
+input "type:keyboard" {
+	xkb_layout us,us,ee
+	xkb_variant ,dvorak,
+	xkb_options caps:escape
+	repeat_rate 40
+	repeat_delay 200
+}
+
+# disable it by default, somehow (without using "events disabled", as that doesn't allow me to re-enable it with my keyboard shortcut)
+input "2:1:PS/2_Generic_Mouse" {
+	pointer_accel -0.9
+	# this doesn't work sadly, replugging my mouse doesn't disable the touchpad
+	events disabled_on_external_mouse
+}

@@ -1,0 +1,17 @@
+exec --no-startup-id dbus-update-activation-environment --all
+exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway DISPLAY=:0
+exec start-applications
+
+include {
+	constants
+	bindings
+	rules
+	input
+}
+
+workspace_layout default
+default_border pixel 1
+default_floating_border normal 1
+
+client.focused		#8c8c8c #8877d0 #ffffff #2e9ef4 #8c8c8c
+client.unfocused	#1c1c1c #222222 #888888 #292d3e #1c1c1c
