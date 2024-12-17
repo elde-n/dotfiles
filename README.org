@@ -1,39 +1,39 @@
 * My confiugration for my linux system
 
 ** Software
-*** [[https://github.com/alacritty/alacritty][alacritty]] My terminal emulator
-*** [[https://github.com/anyrun-org/anyrun][anyrun]] My application launcher
-*** [[https://github.com/sharkdp/bat][bat]] A cat(1) clone with syntax highlighting
-*** [[https://github.com/aristocratos/btop][btop]] A top clone with an interactive mode
-*** [[https://gitlab.gnome.org/GNOME/gimp][gimp]] My image editor
-*** [[https://github.com/hyprwm/Hyprland][hyprland]] My window manager
-*** [[https://github.com/swaywm/sway][sway]] My window manager
-*** [[https://github.com/keepassxreboot/keepassxc][keepassxc]] My password manager
-*** [[https://github.com/librewolf-community/librewolf][librewolf]] My web browser
-*** [[https://github.com/MusicPlayerDaemon/MPD][mpd]] My music server
-*** [[https://github.com/mpv-player/mpv][mpv]] My media player
-*** [[https://github.com/MarshallOfSound/ncmpcpp][ncmpcpp]] My MPD client
-*** [[https://github.com/nicotine-plus/nicotine-plus][nicotine]] A soulseek client
-*** [[https://github.com/neomutt/neomutt][neomutt]] My email client
-*** [[https://github.com/neovim/neovim][neovim]] My text editor
-*** [[https://github.com/obsproject/obs-studio][obs-studio]] My screen video recorder
-*** [[https://github.com/ErikReider/SwayNotificationCenter][swaync]] My notification daemon
-*** [[https://github.com/tremc/tremc][tremc]] My torrent client
-*** [[https://github.com/jstkdng/ueberzugpp][Überzug]] My image viewer
-*** [[https://github.com/Vencord/Vesktop][Vesktop]] A discord client mod
-*** [[https://github.com/swaywm/waybar][waybar]] My status bar
-*** [[https://github.com/sxyazi/yazi][yazi]] My file manager
-*** [[https://github.com/zathura/zathura][zathura]] My PDF viewer
+   - [[https://github.com/alacritty/alacritty][alacritty]] My terminal emulator
+   - [[https://github.com/anyrun-org/anyrun][anyrun]] My application launcher
+   - [[https://github.com/sharkdp/bat][bat]] A cat(1) clone with syntax highlighting
+   - [[https://github.com/aristocratos/btop][btop]] A top clone with an interactive mode
+   - [[https://gitlab.gnome.org/GNOME/gimp][gimp]] My image editor
+   - [[https://github.com/swaywm/sway][sway]] My window manager
+   - [[https://github.com/hyprwm/Hyprland][Hyprland]] My window manager
+   - [[https://github.com/keepassxreboot/keepassxc][keepassxc]] My password manager
+   - [[https://github.com/librewolf-community/librewolf][librewolf]] My web browser
+   - [[https://github.com/MusicPlayerDaemon/MPD][mpd]] My music server
+   - [[https://github.com/mpv-player/mpv][mpv]] My media player
+   - [[https://github.com/MarshallOfSound/ncmpcpp][ncmpcpp]] My MPD client
+   - [[https://github.com/nicotine-plus/nicotine-plus][nicotine]] A soulseek client
+   - [[https://github.com/neomutt/neomutt][neomutt]] My email client
+   - [[https://github.com/neovim/neovim][neovim]] My text editor
+   - [[https://github.com/obsproject/obs-studio][obs-studio]] My screen video recorder
+   - [[https://github.com/ErikReider/SwayNotificationCenter][swaync]] My notification daemon
+   - [[https://github.com/tremc/tremc][tremc]] My torrent client
+   - [[https://github.com/jstkdng/ueberzugpp][Überzug]] My image viewer
+   - [[https://github.com/Vencord/Vesktop][Vesktop]] A discord client mod
+   - [[https://github.com/swaywm/waybar][waybar]] My status bar
+   - [[https://github.com/sxyazi/yazi][yazi]] My file manager
+   - [[https://github.com/zathura/zathura][zathura]] My PDF viewer
 
 ** Screenshots
    #+CAPTION: A screenshot containing some terminals
    [[./assets/screenshot.png]]
 ** Scripts
 
-Add this to your shell profile file
-#+BEGIN_SRC sh
-export LUA_PATH="$LUA_PATH;$HOME/.local/bin/lua/?.lua"
-#+END_SRC
+   Add this to your shell profile file
+   #+BEGIN_SRC sh
+   export LUA_PATH="$LUA_PATH;$HOME/.local/bin/lua/?.lua"
+   #+END_SRC
 *** Common dependencies
 	+ luajit
 	+ jq
