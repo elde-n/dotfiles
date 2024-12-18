@@ -7,10 +7,7 @@ local commands = {
 	"doas /sbin/poweroff",
 	"doas /sbin/reboot",
 	--"loginctl suspend-then-hibernate"
-	"hyprlock", --uhhh
-	"loginctl hibernate",
-	"hyprlock dispatch exit",
-	"hyprlock"
+	"loginctl hibernate"
 }
 
 local options = {

@@ -1,35 +1,39 @@
 #!/usr/bin/env luajit
 
+--TODO: have a check to see if we already ran this
+
 local files = require "modules/files"
 local command = require "modules/command"
 local helpers = require "modules/helpers"
 
+local tmux_session = require "runtime/tmux-session"
 
--- restore brightness from previous session
-local brightness = files.read_file(os.getenv("HOME") .. "/.cache/backlight")
-command.new("brightnessctl")
-	:arg("set")
-	:arg("-q")
-	:arg(brightness)
-	:run()
 
-local applications = {
-	"gentoo-pipewire-launcher",
-	--"hypridle", "ydotoold",
-	"mpd", "mpdscribble", --"mpc-auto-play",
-	"swww-daemon --format xrgb",
-	"battery-warn",
-	"solaar -w=hide",
-	"swaync",
-	"start-waybar",
-	"start-tmux-session",
-	"librewolf",
-	"flatpak run dev.vencord.Vesktop"
-}
-
-for _, application in next, applications do
-	local c = helpers.string_split(application, ' ')
-	local name = table.remove(c, 1)
-
-	command.new(name):arg(unpack(c)):spawn()
+local function restore_brightness()
+	local brightness = files.read_file(os.getenv("HOME") .. "/.cache/backlight")
+	command.new("brightnessctl")
+		:arg("set")
+		:arg("-q")
+		:arg(brightness)
+		:run()
 end
+
+local function start_applications()
+	local applications = {
+		"start-lua-runtime", -- coroutine doesn't seem to work
+	}
+
+	for _, application in next, applications do
+		local c = helpers.string_split(application, ' ')
+		local name = table.remove(c, 1)
+
+		command.new(name)
+			:arg(unpack(c))
+			:spawn()
+	end
+end
+
+
+restore_brightness()
+coroutine.wrap(start_applications)()
+coroutine.wrap(tmux_session.start)()

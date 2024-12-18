@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+arkenfox-updater -e -s -u -p ~/.mozilla/firefox/*.default-esr -o ~/.config/arkenfox/overrides.js

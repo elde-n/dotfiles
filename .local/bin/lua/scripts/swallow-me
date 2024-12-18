@@ -1,26 +1,57 @@
 #!/usr/bin/env luajit
 
---TODO: add support for sway
-
 local arguments = {...}
 
 local json = require "modules/json"
 local command = require "modules/command"
+local desktop = require "modules/desktop"
 
-local j = json.new(command.new("hyprctl")
-	:arg("activewindow")
-	:arg("-j")
-	:run()
-	.output)
+if desktop.name() == "Hyprland" then
+	local j = json.new(command.new("hyprctl")
+		:arg("activewindow")
+		:arg("-j")
+		:run()
+		.output)
 
-command.new("hyprctl")
-	:arg("dispatch")
-	:arg("movetoworkspacesilent")
-	:arg("special")
-	:run()
-command.new(table.remove(arguments, 1)):arg(unpack(arguments)):run()
-command.new("hyprctl")
-	:arg("dispatch")
-	:arg("movetoworkspacesilent")
-	:arg(string.format("%d,pid:%d", j:retrieve(".workspace.id"), j:retrieve(".pid")))
-	:run()
+	command.new("hyprctl")
+		:arg("dispatch")
+		:arg("movetoworkspacesilent")
+		:arg("special")
+		:run()
+	command.new(table.remove(arguments, 1)):arg(unpack(arguments)):run()
+	command.new("hyprctl")
+		:arg("dispatch")
+		:arg("movetoworkspacesilent")
+		:arg(string.format("%d,pid:%d", j:retrieve(".workspace.id"), j:retrieve(".pid")))
+		:run()
+elseif desktop.name() == "sway" then
+	local tree = json.new(command.new("swaymsg")
+		:arg("-t", "get_tree")
+		:run()
+		.output)
+
+	local workspaces = json.new(command.new("swaymsg")
+		:arg("-t", "get_workspaces")
+		:run()
+		.output)
+
+	local active_window = tree:retrieve(".. | select(.type?) | select(.focused==true) | .pid")
+	local active_workspace = workspaces:retrieve(".[] | select(.focused == true) | .num")
+
+	print(active_window, active_workspace)
+
+	command.new("swaymsg")
+		:arg(string.format("[pid=%d]", active_window))
+		:arg("move scratchpad")
+		:run()
+
+	command.new(table.remove(arguments, 1)):arg(unpack(arguments)):run()
+
+	-- technically we could move it to the active_workspace from here on
+	-- but i like it being on the starting workspace, maybe?
+	command.new("swaymsg")
+		:arg(string.format("[pid=%d]", active_window))
+		:arg("move workspace")
+		:arg(active_workspace)
+		:run()
+end

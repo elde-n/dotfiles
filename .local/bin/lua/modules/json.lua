@@ -6,6 +6,8 @@ context.__index = context
 local command = require "modules/command"
 local helpers = require "modules/helpers"
 
+local JSON_QUERY_TOOL = "jaq"
+
 
 function json.new(raw_json)
 	return setmetatable({
@@ -13,6 +15,7 @@ function json.new(raw_json)
 	}, context)
 end
 
+---@return boolean
 local function is_array(t)
 	for k, v in next, t do
 		if type(k) ~= "number" then
@@ -48,7 +51,7 @@ function json.encode(t)
 end
 
 function context:decode(compact)
-	local c = command.new("jq")
+	local c = command.new(JSON_QUERY_TOOL)
 	if compact then c:arg("-c") end
 
 	local handle = c:spawn()
@@ -61,7 +64,7 @@ function context:decode(compact)
 end
 
 function context:retrieve(key)
-	local handle = command.new("jq")
+	local handle = command.new(JSON_QUERY_TOOL)
 		:arg("-r", helpers.wrap_quotes(tostring(key)))
 		:spawn()
 

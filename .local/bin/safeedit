@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+
+export TMPDIR=/tmp/safeedit/
+trap 'trap - EXIT HUP QUIT TERM INT ABRT; rm -f "$tmp" "$tmpcopy"' EXIT HUP QUIT TERM INT ABRT
+
+mkdir -p "$TMPDIR"
+
+for file; do
+	case "$file" in -*) file=./"$file" ;; esac
+	file_name=".$(basename -- $file)"
+	extension=".${file_name##*.}"
+
+	tmp="$(mktemp --suffix=$extension)"
+	if [ -f "$file" ] && [ ! -r "$file" ]; then
+		cat "$file" > "$tmp"
+	elif [ -r "$file" ]; then
+		cat "$file" > "$tmp"
+	fi
+
+	tmpcopy="$(mktemp --suffix=$extension)"
+	cat "$tmp" > "$tmpcopy"
+
+	${EDITOR:-vi} "$tmp"
+	if cmp -s "$tmp" "$tmpcopy"; then
+		echo 'File unchanged, exiting...'
+	else
+		dd if="$tmp" of="$file"
+		echo 'Done, changes written'
+	fi
+
+	rm "$tmp" "$tmpcopy"
+done

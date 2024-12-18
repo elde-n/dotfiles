@@ -3,8 +3,8 @@ command.__index = command
 
 local handle = require "modules/handle"
 
-local function wait(self)
-	assert("TODO")
+local function wait()
+	os.execute("sleep 1")
 end
 
 function command.new(name)
@@ -33,7 +33,7 @@ end
 
 -- TODO support tables
 function command:arg(...)
-	for _, v in next, {...} do
+	for _, v in next, { ... } do
 		if type(v) ~= "string" and type(v) ~= "number" then
 			error(string.format("Invalid argument was given, expected 'string' or 'number', got '%s'", type(v)))
 		end

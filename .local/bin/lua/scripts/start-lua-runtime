@@ -1,0 +1,28 @@
+#!/usr/bin/env luajit
+
+local battery_warn = require "runtime/battery-warn"
+local config_watcher = require "runtime/config-watcher"
+
+
+local threads = {
+	battery_warn.start(),
+	config_watcher.start()
+}
+
+local thread_ticks = {}
+for _, thread in next, threads do
+	thread_ticks[thread] = os.time()
+end
+
+while true do
+	for _, thread in next, threads do
+		if os.time() - thread_ticks[thread] > thread.interval then
+			if coroutine.status(thread.coroutine) ~= "running" then
+				coroutine.resume(thread.coroutine)
+				thread_ticks[thread] = os.time()
+			end
+		end
+	end
+
+	os.execute("sleep 0.1")
+end

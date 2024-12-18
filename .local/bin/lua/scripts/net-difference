@@ -8,7 +8,9 @@ local NETWORK_PATH = "/sys/class/net"
 local function update(n_files)
 	local sum = 0
 	for _, file in next, n_files do
-		sum = sum + files.read_file(file)
+		if files.is_file(file) then
+			sum = sum + files.read_file(file)
+		end
 	end
 
 	local old_sum = 0
