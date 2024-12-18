@@ -1,0 +1,24 @@
+window {
+	background: rgba(80, 70, 90, 0.2);
+}
+
+#entry {
+	border: 0px solid transparent;
+	font-size: 1.3rem;
+}
+
+#match,
+#entry,
+#plugin,
+#main {
+	background: transparent;
+}
+
+#match.activatable #match-title {
+	font-size: 1.15rem;
+	font-family: "Fira Sans"
+}
+
+#match.activatable:selected, #match.activatable:hover:selected {
+	color: #a67aca;
+}
