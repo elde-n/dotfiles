@@ -6,6 +6,7 @@ local command = require "modules/command"
 local LOW_CHARGE_VALUE = 16
 local BRIGHTNESS_VALUE_ON_LOW_CHARGE = 8
 local BATTERY_PATH = "/sys/class/power_supply/BAT1"
+local BATTERY_CHECK_INTERVAL = 60
 
 
 ---@return boolean
@@ -67,15 +68,21 @@ function M.start()
 	local ran_alert = false
 	local saved_brightness = 100
 
+	local thread_ = {}
+
 	local thread = coroutine.create(function()
 		while true do
-			if is_low_charge() and not ran_alert then
-				ran_alert = true
-				saved_brightness = alert()
+			if is_low_charge() then
+				if not ran_alert then
+					thread_.interval = 1
+					ran_alert = true
+					saved_brightness = alert()
+				end
 			else
 				if ran_alert then
 					ran_alert = false
 					restore(saved_brightness)
+					thread_.interval = BATTERY_CHECK_INTERVAL
 				end
 			end
 
@@ -83,10 +90,10 @@ function M.start()
 		end
 	end)
 
-	return {
-		coroutine = thread,
-		interval = 60
-	}
+	thread_.coroutine = thread
+	thread_.interval = BATTERY_CHECK_INTERVAL
+
+	return thread_
 end
 
 return M
