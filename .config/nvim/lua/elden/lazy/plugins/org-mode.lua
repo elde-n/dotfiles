@@ -23,8 +23,10 @@ return {
 
 	config = function()
 		local org_roam = require "org-roam"
-		org_roam.setup({
-			directory = "~/Documents/notes"
-		})
+		pcall(function()
+			org_roam.setup({
+				directory = "~/Documents/notes"
+			})
+		end)
 	end
 }

@@ -2,6 +2,11 @@ exec --no-startup-id dbus-update-activation-environment --all
 exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway DISPLAY=:0
 exec start-applications
 
+exec dinitctl setenv SWAYSOCK=$SWAYSOCK
+exec dinitctl setenv DISPLAY=$DISPLAY
+exec dinitctl setenv WAYLAND_DISPLAY=$WAYLAND_DISPLAY
+exec dinitctl trigger sway.trigger
+
 include {
 	constants
 	bindings

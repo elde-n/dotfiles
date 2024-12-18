@@ -1,17 +1,17 @@
-local function on_attach(client, bufnr)
-	local opts = {buffer = bufnr, remap = false}
+local function on_attach(client, buffer_id)
+	local options = {buffer = buffer_id, remap = false}
 
-	vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, opts)
-	vim.keymap.set('n', "gd", function() vim.lsp.buf.definition() end, opts)
+	vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, options)
+	vim.keymap.set('n', "gd", function() vim.lsp.buf.definition() end, options)
 
-	vim.keymap.set('n', "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+	vim.keymap.set('n', "<leader>vd", function() vim.diagnostic.open_float() end, options)
 
-	vim.keymap.set('n', "<leader>bw", function() vim.lsp.buf.workspace_symbol() end, opts)
-	vim.keymap.set('n', "<leader>ba", function() vim.lsp.buf.code_action() end, opts)
-	vim.keymap.set('n', "<leader>br", function() vim.lsp.buf.references() end, opts)
-	vim.keymap.set('n', "<leader>bn", function() vim.lsp.buf.rename() end, opts)
+	vim.keymap.set('n', "<leader>bw", function() vim.lsp.buf.workspace_symbol() end, options)
+	vim.keymap.set('n', "<leader>ba", function() vim.lsp.buf.code_action() end, options)
+	vim.keymap.set('n', "<leader>br", function() vim.lsp.buf.references() end, options)
+	vim.keymap.set('n', "<leader>bn", function() vim.lsp.buf.rename() end, options)
 
-	vim.keymap.set('i', "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+	vim.keymap.set('i', "<C-h>", function() vim.lsp.buf.signature_help() end, options)
 end
 
 
@@ -20,16 +20,9 @@ local function config()
 	local util = require "lspconfig.util"
 
 	local lua_lsp = {
+		autostart = false,
 		on_attach = on_attach,
-		filetypes = {"lua"},
-
-		settings = {
-			Lua = {
-				diagnostics = {
-					globals = {"vim"}
-				}
-			}
-		}
+		filetypes = { "lua" }
 	}
 
 	local luau_lsp = {
@@ -41,7 +34,7 @@ local function config()
 		},
 
 		filetypes = {
-			"lua",
+			--"lua", -- using lua-lsp-server instead
 			"luau"
 		},
 
@@ -49,16 +42,10 @@ local function config()
 		single_file_support = true,
 
 		settings = {
-			Lua = {
-				diagnostics = {
-					globals = {"vim"}
-				}
-			},
-
 			["luau-lsp"] = {
-				sourcemap = {enabled = false},
-				types = {roblox = true},
-				require = {mode = "relativeToFile"},
+				sourcemap = { enabled = false },
+				types = { roblox = true },
+				require = { mode = "relativeToFile" },
 
 				completion = {
 					suggestImports = true,
@@ -98,9 +85,14 @@ local function config()
 			pylsp = {
 				plugins = {
 					pycodestyle = {
-						ignore = {"W391"},
+						ignore = { "W391", "E302" },
 						maxLineLength = 100
-					}
+					},
+					flake8 = {
+						enabled = true,
+						ignore = { "E302" }
+					},
+					pylint = { enabled = true }
 				}
 			}
 		}
@@ -126,23 +118,12 @@ local function config()
 		on_attach = on_attach
 	}
 
-	local zig_lsp = {
-		on_attach = on_attach
-	}
-
-	-- Lua
-	--lsp.lua_ls.setup(lua_lsp)
-
-	-- enable luau only for roblox
-
-	-- Luau
+	lsp.lua_ls.setup(lua_lsp)
 	lsp.luau_lsp.setup(luau_lsp)
 
-	lsp.bashls.setup(shell_lsp)
+	-- wants typescript LOL!?
+	--lsp.bashls.setup(shell_lsp)
 	lsp.pylsp.setup(python_lsp)
-	lsp.tsserver.setup({
-		cmd = { "tsserver", "--stdio" }
-	})
 
 	lsp.gopls.setup(go_lsp)
 
@@ -151,11 +132,28 @@ local function config()
 	lsp.cmake.setup(cmake_lsp)
 
 	lsp.rust_analyzer.setup(rust_lsp)
-	lsp.zls.setup(zig_lsp)
 end
 
 
 return {
 	"neovim/nvim-lspconfig",
-	config = config
+
+	dependencies = {
+		{
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = {
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } }
+				}
+			}
+		}
+	},
+
+	config = config,
+	init_options = {
+		userLanguages = {
+			rust = "html"
+		}
+	}
 }

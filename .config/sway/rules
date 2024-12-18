@@ -46,7 +46,14 @@ for_window {
 assign {
 	[app_id = "^vesktop$"] 1
 	[app_id = "^Alacritty$" title = "homeland"] 3
+	[app_id = "^Alacritty$" title = "code"] 3
 	[app_id = "^LibreWolf$"] 2
-	[class = "^Steam$"] 4
+	[app_id = "firefox"] 2
+	[class = "^steam$"] 4
 	[app_id = "^org\.keepassxc\.KeePassXC$"] 10
+}
+
+for_window {
+	[app_id = "^Alacritty$" title = "homeland"] layout tabbed
+	[app_id = "^Alacritty$" title = "code"] layout tabbed
 }

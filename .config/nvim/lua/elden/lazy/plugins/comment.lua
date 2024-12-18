@@ -3,6 +3,16 @@ return {
 
 	config = function()
 		local comment = require "Comment"
-		comment.setup({})
+		comment.setup {
+			toggler = {
+				line = nil,
+				block = nil
+			},
+
+			mappings = {
+				basic = false,
+				extra = false
+			}
+		}
 	end
 }

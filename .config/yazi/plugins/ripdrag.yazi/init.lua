@@ -43,13 +43,17 @@ function M:entry()
 	ya.err(self.x, self.y)
 
 	if #files == 0 then return end
-	local child, err = Command("hyprctl")
-		:args({
-			"dispatch", "--", "exec",
-			string.format("[move %d, %d]", self.x, self.y),
-			"ripdrag", "-b", "-x",
-			'"' .. table.concat(files, '" "') .. '"'
-		})
+	--local child, err = Command("hyprctl")
+	--	:args({
+	--		"dispatch", "--", "exec",
+	--		string.format("[move %d, %d]", self.x, self.y),
+	--		"ripdrag", "-b", "-x",
+	--		'"' .. table.concat(files, '" "') .. '"'
+	--	})
+	--	:spawn()
+
+	local child, err = Command("ripdrag")
+		:args({"-b", "-x", '"' .. table.concat(files, '" "' .. '"')})
 		:spawn()
 
 	if not child then fail() end

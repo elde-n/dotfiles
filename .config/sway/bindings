@@ -1,11 +1,11 @@
 floating_modifier $mod normal
 
 bindsym {
-	$mod+Return exec $TERMINAL
+	$mod+Return exec $TERMINAL msg create-window
 	$mod+d exec $menu
 	$mod+b exec $toggle_waybar
 	$mod+Shift+q exec power-menu
-	$mod+Shift+e exec keepassxc
+	$mod+Shift+e exec $PASSWORD_MANAGER
 }
 
 bindsym {
@@ -31,31 +31,33 @@ bindsym {
 }
 
 bindsym {
-	Print		exec grim -l 0 - | wl-copy; mkdir -p $screenshot_format
+	Print		exec grim -l 0 -		  | wl-copy; mkdir -p $screenshot_format
 	Shift+Print	exec grim -g "$(slurp)" - | wl-copy -t image/png
 }
 
 # audio
 bindsym {
-	$mod+p 			exec mpc toggle
-	XF86AudioMute 		exec set-mute toggle
+	$mod+p					exec mpc toggle
+	XF86AudioMute			exec set-mute toggle
 	XF86AudioRaiseVolume 	exec change-volume up 2
 	XF86AudioLowerVolume 	exec change-volume down 2
-	XF86AudioPrev 		exec mpc prev
-	XF86AudioNext		exec mpc next
-	XF86AudioPlay		exec mpc toggle
-	XF86AudioStop		exec mpc stop
-	XF86AudioMedia		exec $TERMINAL -e ncmpcpp
-	XF86AudioMicMute	exec set-mute toggle -t "sink-input"
+	XF86AudioPrev			exec mpc prev
+	XF86AudioNext			exec mpc next
+	XF86AudioPlay			exec mpc toggle
+	XF86AudioStop			exec mpc stop
+	#XF86AudioMedia
+	XF86AudioMicMute		exec set-mute toggle -t "sink-input"
 }
 
 # brightness
 bindsym {
-	XF86MonBrightnessUp	exec change-brightness up 5
+	XF86MonBrightnessUp		exec change-brightness up 5
 	XF86MonBrightnessDown	exec change-brightness down 5
 }
 
 bindsym {
+	$mod+Tab workspace back_and_forth
+
 	$mod+$left focus left
 	$mod+$down focus down
 	$mod+$up focus up

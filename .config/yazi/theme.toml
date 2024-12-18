@@ -1,6 +1,2 @@
-[icon]
-
-rules = [
-	{name = "*", text = ""},
-	{name = "*/", text = ""},
-]
+[flavor]
+use = "kanagawa-dragon"

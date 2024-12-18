@@ -41,13 +41,5 @@ return {
 				enable = true
 			}
 		})
-
-		local configs = parsers.get_parser_configs()
-		configs.luau = {
-			install_info = {
-				url = vim.fs.normalize("~/.local/src/tree-sitter/tree-sitter-luau"),
-				files = {"src/parser.c", "src/scanner.c"}
-			}
-		}
 	end
 }
