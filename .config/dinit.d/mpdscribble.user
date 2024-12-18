@@ -1,0 +1,4 @@
+type = process
+command = /usr/bin/firejail mpdscribble
+logfile = $HOME/.local/share/dinit/mpdscribble.log
+depends-on = mpd.user

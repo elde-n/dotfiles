@@ -1,0 +1,4 @@
+type = process
+command = /usr/bin/solaar -w=hide
+logfile = $HOME/.local/share/dinit/solaar.log
+depends-on = sway.trigger

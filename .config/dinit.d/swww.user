@@ -1,0 +1,4 @@
+type = process
+command = /usr/bin/firejail swww-daemon --format xrgb
+logfile = $HOME/.local/share/dinit/swww.log
+depends-on = sway.trigger

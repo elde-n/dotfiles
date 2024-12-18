@@ -1,0 +1,5 @@
+type = process
+command = /usr/bin/firejail firefox
+logfile = $HOME/.local/share/dinit/firefox.log
+depends-on = sway.trigger
+restart = false

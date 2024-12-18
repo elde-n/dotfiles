@@ -1,0 +1,5 @@
+type = process
+command = /usr/bin/waybar
+logfile = $HOME/.local/share/dinit/waybar.log
+smooth-recovery = true
+depends-on = swaync.user

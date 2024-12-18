@@ -1,0 +1,4 @@
+type = process
+command = /usr/bin/firejail swaync
+logfile = $HOME/.local/share/dinit/swaync.log
+depends-on = sway.trigger
