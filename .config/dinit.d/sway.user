@@ -1,5 +1,5 @@
 type = process
-command = /usr/bin/zsh --login -c /usr/bin/sway
+command = /usr/bin/zsh --login -c "dbus-update-activation-environment DISPLAY=:0 /usr/bin/sway"
 logfile = $HOME/.local/share/dinit/sway.log
 restart = true
 working-dir = $HOME
