@@ -1,0 +1,5 @@
+type = process
+command = persway daemon -l "mark --add _prev" -d spiral
+depends-on = sway.trigger
+logfile = $HOME/.local/share/dinit/persway.log
+restart = yes
