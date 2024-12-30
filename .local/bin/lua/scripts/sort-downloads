@@ -10,17 +10,20 @@ local VIDEOS = DOWNLOADS .. "/videos"
 local AUDIOS = DOWNLOADS .. "/audios"
 local IMAGES = DOWNLOADS .. "/images"
 
-
+--@param file string
+--@return string
 local function get_file_type(file)
 	local result, err = command.new("file")
 		:arg("--mime-type -b")
-		:arg(file)
+		:arg(string.format("%q", file))
 		:run()
 
 	if err then return result.code end
 	return (string.gsub(result.output, "(.*)(/.*)", "%1"))
 end
 
+--@param file string
+--@return string
 local function get_file_date(file)
 	local result, err = command.new("stat")
 		:arg("-c", "%y", '"' .. file .. '"')
@@ -30,14 +33,21 @@ local function get_file_date(file)
 	return (string.gsub(result.output, "([%d%-]*)(.*)", "%1"))
 end
 
+--@param file string
+--@return string
 local function get_target_destination(file)
 	local file_type = get_file_type(file)
-	if file_type == "video" then return VIDEOS
-	elseif file_type == "audios" then return AUDIOS
-	elseif file_type == "image" then return IMAGES
+	local suffix = '/' .. string.gsub(get_file_date(file), '-', '/')
+
+	local prefix do
+		if file_type == "video" then prefix = VIDEOS
+		elseif file_type == "audio" then prefix = AUDIOS
+		elseif file_type == "image" then prefix = IMAGES
+		else prefix = DOWNLOADS
+		end
 	end
 
-	return DOWNLOADS .. '/' .. string.gsub(get_file_date(file), '-', '/')
+	return prefix .. suffix
 end
 
 for _, file in next, files.read_directory(DOWNLOADS) do
@@ -53,4 +63,7 @@ for _, file in next, files.read_directory(DOWNLOADS) do
 	end
 end
 
-notify.new({ title = "Finished sorting downloads" }):send()
+notify.new({
+	title = "Finished sorting downloads",
+	category = "desktop-user"
+}):send()
