@@ -1,13 +1,13 @@
 #!/usr/bin/env luajit
 
+local notify = require "modules/notify"
 local command = require "modules/command"
 local helpers = require "modules/helpers"
 
+
 local commands = {
-	"doas /sbin/poweroff",
-	"doas /sbin/reboot",
-	--"loginctl suspend-then-hibernate"
-	"loginctl hibernate"
+	"doas /sbin/shutdown",
+	"doas /sbin/reboot"
 }
 
 local options = {
@@ -31,5 +31,9 @@ local result = command.new("echo")
 
 local index = helpers.table_find(options, result.output)
 if index and commands[index] then
-	command.new(commands[index]):run()
+	local result = command.new(commands[index]):run()
+	notify.new({
+		title = "power-menu",
+		body = "error: " .. tostring(result.output) .. " " .. tostring(result.code) .. " " .. tostring(result.status)
+	}):send()
 end

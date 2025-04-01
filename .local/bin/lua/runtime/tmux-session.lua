@@ -19,21 +19,8 @@ function M.start()
 	command.new("tmux")
 		:arg("new-window")
 		:arg("-thome: -c")
-		:arg(HOME)
-		:arg(os.getenv("MAIL_CLIENT"))
-		:run()
-
-	command.new("tmux")
-		:arg("new-window")
-		:arg("-thome: -c")
 		:arg(HOME .. "/Music")
 		:arg(os.getenv("MUSIC_PLAYER"))
-		:run()
-
-	command.new("tmux")
-		:arg("new-window")
-		:arg("-tcode: -c")
-		:arg(HOME .. "/Documents/code")
 		:run()
 
 	if desktop.name() == "sway" then

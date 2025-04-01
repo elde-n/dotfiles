@@ -1,2 +1,11 @@
 #!/usr/bin/env sh
-arkenfox-updater -e -s -u -p ~/.mozilla/firefox/*.default-esr -o ~/.config/arkenfox/overrides.js
+
+# add -e if using ESR
+
+CONFIG="$HOME/.config/arkenfox/"
+PROFILE=$HOME/.mozilla/firefox/*.default-esr
+
+cp -r $CONFIG/chrome $PROFILE
+cp $CONFIG/user-overrides.js $PROFILE
+
+arkenfox-updater -e -s -u -p $PROFILE
