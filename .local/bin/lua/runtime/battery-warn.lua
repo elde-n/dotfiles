@@ -28,7 +28,8 @@ end
 local function alert()
 	notify.new({
 		title = "Battery low",
-		body = string.format("<%d%% of charge remaining", LOW_CHARGE_VALUE)
+		body = string.format("<%d%% of charge remaining", LOW_CHARGE_VALUE),
+		category = "desktop-user"
 	}):send()
 
 	local brightness = command.new("brightnessctl")

@@ -29,6 +29,7 @@ local volume = command.new("wpctl")
 volume = tostring(tonumber((string.gsub(volume, "(.*%s)(.*)", "%2"))) * 100)
 notify.new({
 	app_name = "wpctl",
+	category = "desktop-user",
 	title = "Volume: " .. volume
 })
 	:hint("string", "synchronous", "volume")
