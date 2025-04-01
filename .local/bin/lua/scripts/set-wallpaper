@@ -62,8 +62,6 @@ elseif mime_type == "inode/directory" then
 		:run()
 		.output
 
-	print("wtf", random_image)
-
 	command.new("ln")
 		:arg("-sfr", random_image)
 		:arg(sym_location)
