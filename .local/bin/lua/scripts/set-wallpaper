@@ -1,21 +1,24 @@
 #!/usr/bin/env luajit
 
-local arguments = {...}
-local file = arguments[1]
+local arguments = { ... }
+local path = arguments[1]
 
 local function usage()
 	return "Usage: set-wallpaper <path>"
 end
 
-if not file then return print(usage()) end
+if not path then return print(usage()) end
 
+local files = require "modules/files"
 local notify = require "modules/notify"
 local command = require "modules/command"
 local helpers = require "modules/helpers"
 
-local sym_location = os.getenv("HOME") .. "/.local/share/bg"
+local namespace = os.getenv("HOME") .. "/.cache/set-wallpaper"
+local sym_location = namespace .. "/wallpaper"
 
-local location do
+local location
+do
 	local result, err = command.new("readlink")
 		:arg(sym_location)
 		:run()
@@ -24,42 +27,59 @@ local location do
 	location = result.output
 end
 
-local mime_type do
+local mime_type
+do
 	local result, err = command.new("file")
 		:arg("--mime-type -b")
-		:arg(helpers.wrap_quotes(file))
+		:arg(helpers.wrap_quotes(path))
 		:run()
 
 	if err then return result.code end
 	mime_type = result.output
 end
 
+files.write_directory(namespace)
+
 if string.match(mime_type, "image/*") then
 	command.new("ln")
-		:arg("-sfr", helpers.wrap_quotes(file), sym_location)
+		:arg("-sfr", helpers.wrap_quotes(path), sym_location)
 		:run()
 
 	notify.new({
 		title = "Changing wallpaper..",
-		icon = sym_location
+		icon = sym_location,
+		category = "desktop-user"
 	}):send()
 elseif mime_type == "inode/directory" then
-	command.new("ln")
-		:arg("-sfr", helpers.wrap_quotes(file))
+	local random_image = command.new("find")
+		:arg(helpers.wrap_quotes(path))
 		:arg("-iregex")
 		:arg("'.*.\\(jpg\\|jpeg\\|png\\|gif\\)'")
 		:arg("-type f")
 		:pipe(command.new("shuf")
 			:arg("-n 1")
 		)
+		:run()
+		.output
+
+	print("wtf", random_image)
+
+	command.new("ln")
+		:arg("-sfr", random_image)
 		:arg(sym_location)
 		:run()
+
 	notify.new({
 		title = "Random wallpaper chosen.",
-		icon = sym_location
+		icon = sym_location,
+		category = "desktop-user"
 	}):send()
 else
-	notify.new({ title = " Error", body = "Not a valid image or directory" }):send()
+	notify.new({
+		title = " Error",
+		body = "Not a valid image or directory",
+		category = "desktop-user"
+	}):send()
 	return 1
 end
 
