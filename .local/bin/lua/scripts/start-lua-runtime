@@ -1,12 +1,13 @@
 #!/usr/bin/env luajit
 
+local helpers = require "modules/helpers"
 local battery_warn = require "runtime/battery-warn"
 local config_watcher = require "runtime/config-watcher"
 
 
 local threads = {
 	battery_warn.start(),
-	config_watcher.start()
+	unpack(config_watcher.start())
 }
 
 local thread_ticks = {}
