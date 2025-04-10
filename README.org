@@ -19,10 +19,10 @@
    - [[https://github.com/obsproject/obs-studio][obs-studio]] My screen video recorder
    - [[https://github.com/ErikReider/SwayNotificationCenter][swaync]] My notification daemon
    - [[https://github.com/intuis/rustmission][rustmission]] My torrent client
-   - [[https://github.com/Vencord/Vesktop][Vesktop]] A discord client mod
-   - [[https://github.com/swaywm/waybar][waybar]] My status bar
+   - [[https://github.com/Vendicated/Vencord][Vencord]] My discord client mod for firefox
+   - [[https://github.com/Alexays/Waybar][waybar]] My status bar
    - [[https://github.com/sxyazi/yazi][yazi]] My file manager
-   - [[https://github.com/zathura/zathura][zathura]] My PDF viewer
+   - [[https://github.com/pwmt/zathura][zathura]] My PDF viewer
 
 ** Screenshots
    #+CAPTION: A screenshot containing some terminals
