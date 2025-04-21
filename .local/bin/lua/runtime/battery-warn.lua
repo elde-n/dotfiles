@@ -32,15 +32,14 @@ local function alert()
 		category = "desktop-user"
 	}):send()
 
-	local brightness = command.new("brightnessctl")
+	local brightness = command.new("akarui")
 		:arg("get")
 		:run()
 		.output
 
-	command.new("brightnessctl")
-		:arg("-q")
+	command.new("akarui")
 		:arg("set")
-		:arg(string.format("%d%%", BRIGHTNESS_VALUE_ON_LOW_CHARGE))
+		:arg(BRIGHTNESS_VALUE_ON_LOW_CHARGE)
 		:run()
 
 	return brightness
@@ -48,8 +47,7 @@ end
 
 ---@param brightness number
 local function restore(brightness)
-	command.new("brightnessctl")
-		:arg("-q")
+	command.new("akarui")
 		:arg("set")
 		:arg(brightness)
 		:run()

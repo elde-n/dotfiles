@@ -1,45 +1,36 @@
 #!/usr/bin/env luajit
 
-local arguments = {...}
+local arguments = { ... }
 
-local files = require "modules/files"
 local notify = require "modules/notify"
 local command = require "modules/command"
 
-local path = os.getenv("HOME") .. "/.cache/backlight"
-
 
 local action = arguments[1]
-local value = arguments[2] or '0'
+local value = arguments[2] or 0
 
 if not action then return end
 
-local app = command.new("brightnessctl")
-	:arg("set")
-	:arg("-q")
-if action == "up" then
-	app:arg('+' .. value .. '%'):run()
-elseif action == "down" then
-	app:arg(value .. "%-"):run()
-elseif action == "set" then
-	app:arg(value):run()
-end
-
-local value_brightness = command.new("brightnessctl")
+local brightness = command.new("akarui")
 	:arg("get")
 	:run()
 	.output
 
-local max_brightness = command.new("brightnessctl")
-	:arg("max")
+if action == "up" then
+	brightness = brightness + value
+elseif action == "down" then
+	brightness = brightness - value
+elseif action == "set" then
+	brightness = value
+end
+
+command.new("akarui")
+	:arg("set")
+	:arg(brightness)
 	:run()
-	.output
 
-files.write_file(path, value_brightness)
-
-local brightness = string.format("%.2f", math.floor(100 * (value_brightness / max_brightness)))
 notify.new({
-	app_name = "brightnessctl",
+	app_name = "akarui",
 	category = "desktop-user",
 	title = "Brightness: " .. brightness
 })

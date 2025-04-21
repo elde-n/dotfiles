@@ -2,7 +2,6 @@
 
 --TODO: have a check to see if we already ran this
 
-local files = require "modules/files"
 local command = require "modules/command"
 local helpers = require "modules/helpers"
 
@@ -10,11 +9,8 @@ local tmux_session = require "runtime/tmux-session"
 
 
 local function restore_brightness()
-	local brightness = files.read_file(os.getenv("HOME") .. "/.cache/backlight")
-	command.new("brightnessctl")
-		:arg("set")
-		:arg("-q")
-		:arg(brightness)
+	command.new("akarui")
+		:arg("load")
 		:run()
 end
 
@@ -28,7 +24,7 @@ local function start_applications()
 		local name = table.remove(c, 1)
 
 		command.new(name)
-			:arg(unpack(c))
+			:arg(table.unpack(c))
 			:spawn()
 	end
 end
