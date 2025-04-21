@@ -22,9 +22,8 @@ local options = {
 
 local result = command.new("echo")
 	:arg('"' .. table.concat(options, '\n') .. '"')
-	:pipe(command.new(os.getenv("MENU_LAUNCHER"))
-		:arg("-p \"Power\"")
-		:arg("-i -l -1")
+	:pipe(command.new("anyrun")
+		:arg("--plugins libstdin.so")
 	)
 	:run()
 
