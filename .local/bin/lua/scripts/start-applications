@@ -24,7 +24,7 @@ local function start_applications()
 		local name = table.remove(c, 1)
 
 		command.new(name)
-			:arg(table.unpack(c))
+			:arg(unpack(c))
 			:spawn()
 	end
 end
