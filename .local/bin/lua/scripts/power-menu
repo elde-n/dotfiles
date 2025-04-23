@@ -11,13 +11,13 @@ local commands = {
 }
 
 local options = {
-	"󰤆 Shutdown",
-	"󰑖 Reboot",
-	--"  Suspend",
-	" Sleep",
-	"󰜗 Hibernate",
-	"󰍃 Log Out",
-	" Lock"
+	"󰤆 Shutdown ",
+	"󰑖 Reboot ",
+	--"  Suspend ",
+	" Sleep ",
+	"󰜗 Hibernate ",
+	"󰍃 Log Out ",
+	" Lock "
 }
 
 local result = command.new("echo")
@@ -27,8 +27,10 @@ local result = command.new("echo")
 	)
 	:run()
 
+-- bandaid fix for anyrun stdin plugin
+local output = result.output .. ' '
 
-local index = helpers.table_find(options, result.output)
+local index = helpers.table_find(options, output)
 if index and commands[index] then
 	local result = command.new(commands[index]):run()
 	notify.new({
